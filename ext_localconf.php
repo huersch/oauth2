@@ -6,7 +6,7 @@ use Mfc\OAuth2\Services\OAuth2LoginService;
 defined('TYPO3_MODE') || die();
 
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addService(
-    $_EXTKEY,
+    'oauth2',
     'auth',
     OAuth2LoginService::class,
     [
@@ -21,14 +21,14 @@ defined('TYPO3_MODE') || die();
         'className' => OAuth2LoginService::class
     ]
 );
-
+$extensionConfig = [];
 if (isset($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['oauth2'])) {
     $extensionConfig = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['oauth2']);
 } elseif (isset($GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['oauth2'])) {
     $extensionConfig = $GLOBALS['TYPO3_CONF_VARS']['EXTENSIONS']['oauth2'];
 }
 
-if ($extensionConfig['enableBackendLogin']) {
+if (isset($extensionConfig['enableBackendLogin']) && $extensionConfig['enableBackendLogin']) {
     $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['backend']['loginProviders'][1529672977] = [
         'provider' => OAuth2LoginProvider::class,
         'sorting' => 25,
